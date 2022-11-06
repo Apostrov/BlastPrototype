@@ -1,5 +1,5 @@
-import { _decorator, Component, Node, UITransform, Prefab, Vec2 } from 'cc';
-import { Block, BlockColor } from '../Block';
+import { _decorator, Component, Prefab, Vec2 } from 'cc';
+import { Block } from '../Block';
 import { FieldBlastSolver } from './FieldBlastSolver';
 import { FieldGenerator } from './FieldGenerator';
 const { ccclass, property } = _decorator;
@@ -21,21 +21,26 @@ export class Field extends Component {
     private field: Block[][] = [];
 
     start() {
-        this.field = this.fieldGenerator.generateField(this.gridSize, this.block, this);
+        this.field = new Array(this.gridSize.x)
+            .fill(null)
+            .map(() =>
+                new Array(this.gridSize.y).fill(null)
+            );
+        this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this);
     }
 
     public blockPressed(block: Block) {
-        let toDestroy : Block[] = FieldBlastSolver.dfsBlastSolve(block, this.field);
-        if(toDestroy.length < this.minBlastGroup) {
+        let toDestroy: Block[] = FieldBlastSolver.dfsBlastSolve(block, this.field);
+        if (toDestroy.length < this.minBlastGroup) {
             return;
         }
-        toDestroy.forEach((element) => 
-        {
+        toDestroy.forEach((element) => {
             let index = element.getIndex();
             this.field[index.x][index.y] = null;
-            element.destroyBlock(); 
+            element.destroyBlock();
         });
         this.fieldGenerator.rearrangeField(this.field);
+        this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this);
     }
 }
 

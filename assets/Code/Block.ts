@@ -34,12 +34,13 @@ export class Block extends Component {
 
     private index: Vec2 = new Vec2(0, 0);
     private color: BlockColor = BlockColor.BLUE;
-    private field: Field | null = null;
+    private fieldComponent: Field | null = null;
     private currentTween: Tween<Node> | null = null;
 
-    public init(index: Vec2, field: Field) {
+    public init(index: Vec2, fieldComponent: Field, spawnPos: Vec3) {
         this.index = index;
-        this.field = field;
+        this.fieldComponent = fieldComponent;
+        this.node.position = spawnPos;
     }
 
     public onLoad() {
@@ -47,7 +48,7 @@ export class Block extends Component {
     }
 
     private onBlockPress() {
-        this.field?.blockPressed(this);
+        this.fieldComponent?.blockPressed(this);
     }
 
     public chooseRandomColor() {
@@ -73,16 +74,12 @@ export class Block extends Component {
         this.index = index;
     }
 
-    public updatePosition(pos: Vec3, animate: boolean = false) {
+    public updatePosition(pos: Vec3) {
         this.currentTween?.stop();
-        if (animate) {
-            this.currentTween = tween(this.node)
-                .delay(this.destroyAnimTime)
-                .to(this.moveAnimTime, { position: pos })
-                .start();
-        } else {
-            this.node.setPosition(pos);
-        }
+        this.currentTween = tween(this.node)
+            .delay(this.destroyAnimTime)
+            .to(this.moveAnimTime, { position: pos })
+            .start();
 
     }
 
