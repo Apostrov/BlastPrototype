@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Prefab, UITransform, Vec2, instantiate, Vec3 } from 'cc';
-import { Block } from '../Block';
+import { Block } from '../Block/Block';
 import { Field } from './Field';
 const { ccclass, property } = _decorator;
 

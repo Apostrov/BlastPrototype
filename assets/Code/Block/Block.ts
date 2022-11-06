@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Enum, Input, Vec2, Vec3, tween, Tween } from 'cc';
-import { Field } from './Field/Field';
+import { Field } from '../Field/Field';
 const { ccclass, property } = _decorator;
 
 export enum BlockColor {

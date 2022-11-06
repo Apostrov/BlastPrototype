@@ -1,5 +1,5 @@
 import { Vec2 } from "cc";
-import { Block, BlockColor } from "../Block";
+import { Block, BlockColor } from "../Block/Block";
 
 export class FieldBlastSolver {
     public static dfsBlastSolve(startBlock: Block, field: Block[][]): Block[] {
@@ -31,6 +31,19 @@ export class FieldBlastSolver {
         }
 
         return toBlast;
+    }
+
+    public static isFieldSolvable(field: Block[][]): boolean {
+        for (let i = 1; i < field.length; i++) {
+            for (let j = 1; j < field[i].length; j++) {
+                let color = field[i][j].getColor();
+                if(field[i - 1][j].getColor() == color)
+                    return true;
+                if(field[i][j - 1].getColor() == color)
+                    return true;
+            }
+        }
+        return false;
     }
 }
 
