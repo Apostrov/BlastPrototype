@@ -92,5 +92,13 @@ export class Block extends Component {
             })
             .start();
     }
+
+    public cantDestroy()
+    {
+        tween(this.node)
+            .to(this.destroyAnimTime, { scale: new Vec3(0.5, 0.5, 0.5) })
+            .to(this.destroyAnimTime, { scale: new Vec3(1, 1, 1) })
+            .start();
+    }
 }
 

@@ -36,6 +36,7 @@ export class Field extends Component {
     public blockPressed(block: Block) {
         let toDestroy: Block[] = FieldBlastSolver.dfsBlastSolve(block, this.field);
         if (toDestroy.length < this.minBlastGroup) {
+            toDestroy.forEach((block) => block.cantDestroy());
             return;
         }
         toDestroy.forEach((element) => {
