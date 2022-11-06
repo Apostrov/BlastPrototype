@@ -711,6 +711,8 @@
     "__prefab": {
       "__id__": 33
     },
+    "moveAnimTime": 0.2,
+    "destroyAnimTime": 0.1,
     "block": [
       {
         "__id__": 34

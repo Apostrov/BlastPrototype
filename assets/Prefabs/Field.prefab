@@ -250,7 +250,7 @@
     "__prefab": {
       "__id__": 10
     },
-    "utTransform": {
+    "uiTransform": {
       "__id__": 11
     },
     "_id": ""
@@ -307,6 +307,7 @@
     "__prefab": {
       "__id__": 15
     },
+    "minBlastGroup": 2,
     "gridSize": {
       "__type__": "cc.Vec2",
       "x": 9,

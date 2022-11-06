@@ -29,7 +29,13 @@ export class Field extends Component {
         if(toDestroy.length < this.minBlastGroup) {
             return;
         }
-        toDestroy.forEach((element) => element.node.destroy());
+        toDestroy.forEach((element) => 
+        {
+            let index = element.getIndex();
+            this.field[index.x][index.y] = null;
+            element.destroyBlock(); 
+        });
+        this.fieldGenerator.rearrangeField(this.field);
     }
 }
 
