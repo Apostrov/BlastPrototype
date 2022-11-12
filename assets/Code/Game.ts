@@ -30,7 +30,6 @@ export class Game extends Component {
 
         config.numberOfMoves = Math.trunc(randomRange(this.rangeNumberOfMoves.x, this.rangeNumberOfMoves.y + 1));
         config.numberOfPoints = Math.trunc(randomRange(this.rangeNumberOfPoints.x, this.rangeNumberOfPoints.y + 1));
-        config.blockColor = randomEnumValue(BlockColor);
 
         this.field.init(config);
         this.uiStateManager.onGameplay();
@@ -43,5 +42,4 @@ export class GameConfig {
     public gridSize: Vec2;
     public numberOfMoves: number;
     public numberOfPoints: number;
-    public blockColor: BlockColor;
 }
