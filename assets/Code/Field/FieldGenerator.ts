@@ -1,5 +1,6 @@
 import { _decorator, Component, Node, Prefab, UITransform, Vec2, instantiate, Vec3 } from 'cc';
 import { Block } from '../Block/Block';
+import { BlocksPool } from '../Block/BlocksPool';
 import { Field } from './Field';
 const { ccclass, property } = _decorator;
 
@@ -17,7 +18,7 @@ export class FieldGenerator extends Component {
                 if (field[i][j] != null)
                     continue;
 
-                let block: Node = instantiate(blockPrefab);
+                let block: Node = BlocksPool.newBlock(blockPrefab);
                 block.parent = this.node;
 
                 let blockComponent: Block = block.getComponent(Block);
@@ -56,4 +57,3 @@ export class FieldGenerator extends Component {
         }
     }
 }
-
