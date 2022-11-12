@@ -28,8 +28,8 @@ export class Game extends Component {
         config.maxFieldRefresh = this.maxFieldRefresh;
         config.gridSize = this.gridSize;
 
-        config.numberOfMoves = randomRange(this.rangeNumberOfMoves.x, this.rangeNumberOfMoves.y + 1);
-        config.numberOfPoints = randomRange(this.rangeNumberOfPoints.x, this.rangeNumberOfPoints.y + 1);
+        config.numberOfMoves = Math.trunc(randomRange(this.rangeNumberOfMoves.x, this.rangeNumberOfMoves.y + 1));
+        config.numberOfPoints = Math.trunc(randomRange(this.rangeNumberOfPoints.x, this.rangeNumberOfPoints.y + 1));
         config.blockColor = randomEnumValue(BlockColor);
 
         this.field.init(config);

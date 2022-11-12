@@ -16,6 +16,8 @@ export class UIStateManager extends Component {
     public onGameplay() {
         this.isGameEnded = false;
         this.gameplay.show();
+        this.winScreen.hide();
+        this.loseScreen.hide();
     }
 
     public onWin() {

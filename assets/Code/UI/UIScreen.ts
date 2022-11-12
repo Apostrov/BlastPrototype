@@ -3,10 +3,6 @@ const { ccclass, property } = _decorator;
 
 @ccclass('UIScreen')
 export class UIScreen extends Component {
-    public onLoad() {
-        this.hide();
-    }
-
     public show() {
         this.node.active = true;
     }

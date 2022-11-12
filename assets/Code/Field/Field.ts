@@ -4,6 +4,7 @@ import { GameConfig } from '../Game';
 import { UIStateManager } from '../UI/UIStateManager';
 import { FieldBlastSolver } from './FieldBlastSolver';
 import { FieldGenerator } from './FieldGenerator';
+import { FieldMovesCounter } from './FieldMovesCounter';
 import { FieldPointsCounter } from './FieldPointsCounter';
 const { ccclass, property } = _decorator;
 
@@ -17,18 +18,20 @@ export class Field extends Component {
     public uiStateManager: UIStateManager | null = null;
     @property({ type: FieldPointsCounter })
     public pointsCounter: FieldPointsCounter | null = null;
+    @property({ type: FieldMovesCounter })
+    public movesCounter: FieldMovesCounter | null = null;
 
     private config: GameConfig | null = null;
 
     // runtime data
     private field: Block[][] = [];
     private refreshCount: number = 0;
-    private numberOfMoves: number = 0;
 
     init(config: GameConfig) {
         this.config = config;
         this.refreshCount = 0;
-        this.numberOfMoves = 0;
+
+        this.movesCounter.init(config);
         this.pointsCounter.init(config);
 
         this.field = new Array(this.config.gridSize.x)
@@ -44,12 +47,12 @@ export class Field extends Component {
         let toDestroy: Block[] = FieldBlastSolver.dfsBlastSolve(block, this.field);
         if (toDestroy.length < this.config.minBlastGroup) {
             this.blastCantDestroy(toDestroy);
-            this.updateMovesNumber();
+            this.movesCounter.updateMovesNumber();
             return;
         }
         
         this.destroyBlocks(toDestroy);
-        this.updateMovesNumber();
+        this.movesCounter.updateMovesNumber();
         this.fieldGenerator.rearrangeField(this.field);
         this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this);
         this.tryRefreshField();
@@ -89,14 +92,6 @@ export class Field extends Component {
 
     private blastCantDestroy( toDestroy: Block[]) {
         toDestroy.forEach((block) => block.cantDestroy());
-    }
-
-    private updateMovesNumber() {
-        this.numberOfMoves++;
-
-        if(this.numberOfMoves >= this.config.numberOfMoves) {
-            this.uiStateManager.onLose();
-        }
     }
 }
 
