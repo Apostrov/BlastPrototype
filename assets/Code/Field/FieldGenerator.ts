@@ -1,6 +1,7 @@
 import { _decorator, Component, Node, Prefab, UITransform, Vec2, instantiate, Vec3 } from 'cc';
 import { Block } from '../Block/Block';
 import { BlocksPool } from '../Block/BlocksPool';
+import { IBlock } from '../Block/IBlock';
 import { Field } from './Field';
 const { ccclass, property } = _decorator;
 
@@ -9,7 +10,7 @@ export class FieldGenerator extends Component {
     @property({ type: UITransform })
     public uiTransform: UITransform | null = null;
 
-    public fillEmptyBlocks(field: Block[][], blockPrefab: Prefab, fieldComponent: Field) {
+    public fillEmptyBlocks(field: IBlock[][], blockPrefab: Prefab, fieldComponent: Field) {
         let cellWidth: number = this.uiTransform.width / field.length;
         for (let i = 0; i < field.length; i++) {
             let cellHeight: number = this.uiTransform.height / field[i].length;
@@ -30,7 +31,7 @@ export class FieldGenerator extends Component {
         }
     }
 
-    public rearrangeField(field: Block[][]) {
+    public rearrangeField(field: IBlock[][]) {
         let cellWidth: number = this.uiTransform.width / field.length;
         for (let i = 0; i < field.length; i++) {
             let cellHeight: number = this.uiTransform.height / field[i].length;

@@ -1,5 +1,5 @@
 import { _decorator, Component, Prefab, Vec2 } from 'cc';
-import { Block } from '../Block/Block';
+import { IBlock } from '../Block/IBlock';
 import { GameConfig } from '../Game';
 import { UIStateManager } from '../UI/UIStateManager';
 import { FieldBlastSolver } from './FieldBlastSolver';
@@ -24,7 +24,7 @@ export class Field extends Component {
     private config: GameConfig | null = null;
 
     // runtime data
-    private field: Block[][] = [];
+    private field: IBlock[][] = [];
     private refreshCount: number = 0;
 
     init(config: GameConfig) {
@@ -43,8 +43,8 @@ export class Field extends Component {
         this.tryRefreshField();
     }
 
-    public blockPressed(block: Block) {
-        let toDestroy: Block[] = FieldBlastSolver.dfsBlastSolve(block, this.field);
+    public blockPressed(block: IBlock) {
+        let toDestroy: IBlock[] = FieldBlastSolver.dfsBlastSolve(block, this.field);
         if (toDestroy.length < this.config.minBlastGroup) {
             this.blastCantDestroy(toDestroy);
             this.movesCounter.updateMovesNumber();
@@ -58,7 +58,7 @@ export class Field extends Component {
         this.tryRefreshField();
     }
 
-    private destroyBlocks(toDestroy: Block[]) {
+    private destroyBlocks(toDestroy: IBlock[]) {
         toDestroy.forEach((element) => {
             this.pointsCounter.tryToCountPoints(element);
             let index = element.getIndex();
@@ -90,8 +90,8 @@ export class Field extends Component {
         });
     }
 
-    private blastCantDestroy( toDestroy: Block[]) {
-        toDestroy.forEach((block) => block.cantDestroy());
+    private blastCantDestroy( toDestroy: IBlock[]) {
+        toDestroy.forEach((block) => block.cantDestroyBlock());
     }
 }
 

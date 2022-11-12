@@ -1,13 +1,14 @@
 import { _decorator, Component, Node, Enum, Input, Vec2, Vec3, tween, Tween } from 'cc';
 import { Field } from '../Field/Field';
 import { BlocksPool } from './BlocksPool';
+import { IBlock } from './IBlock';
 const { ccclass, property } = _decorator;
 
 export enum BlockColor {
     BLUE = 0,
-    GREEN = 1,
-    PINK = 2,
-    YELLOW = 3
+    GREEN,
+    PINK,
+    YELLOW
 };
 
 @ccclass('BlockVisual')
@@ -25,7 +26,7 @@ export const randomEnumValue = (enumeration) => {
 }
 
 @ccclass('Block')
-export class Block extends Component {
+export class Block extends Component implements IBlock {
     @property
     public moveAnimTime: number = 0.2;
     @property
@@ -94,7 +95,7 @@ export class Block extends Component {
             .start();
     }
 
-    public cantDestroy()
+    public cantDestroyBlock()
     {
         tween(this.node)
             .to(this.destroyAnimTime, { scale: new Vec3(0.5, 0.5, 0.5) })

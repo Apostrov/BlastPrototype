@@ -1,9 +1,10 @@
 import { Vec2 } from "cc";
-import { Block, BlockColor } from "../Block/Block";
+import { BlockColor } from "../Block/Block";
+import { IBlock } from "../Block/IBlock";
 
 export class FieldBlastSolver {
-    public static dfsBlastSolve(startBlock: Block, field: Block[][]): Block[] {
-        let toBlast: Block[] = [];
+    public static dfsBlastSolve(startBlock: IBlock, field: IBlock[][]): IBlock[] {
+        let toBlast: IBlock[] = [];
         let dfsStack: Vec2[] = [];
         let discoverd: boolean[][] = new Array(field.length)
             .fill(false)
@@ -33,7 +34,7 @@ export class FieldBlastSolver {
         return toBlast;
     }
 
-    public static isFieldSolvable(field: Block[][]): boolean {
+    public static isFieldSolvable(field: IBlock[][]): boolean {
         for (let i = 1; i < field.length; i++) {
             for (let j = 1; j < field[i].length; j++) {
                 let color = field[i][j].getColor();

@@ -1,5 +1,5 @@
 import { _decorator, Component, Node, Game } from 'cc';
-import { Block } from '../Block/Block';
+import { IBlock } from '../Block/IBlock';
 import { GameConfig } from '../Game';
 import { PointsCounterUI } from '../UI/PointsCounterUI';
 import { UIStateManager } from '../UI/UIStateManager';
@@ -21,7 +21,7 @@ export class FieldPointsCounter extends Component {
         this.counterUI.updateCounter(this.numberOfPoints, this.config.numberOfPoints);
     }
 
-    public tryToCountPoints(block: Block) {
+    public tryToCountPoints(block: IBlock) {
         this.numberOfPoints++;
         this.counterUI.updateCounter(this.numberOfPoints, this.config.numberOfPoints);
 

@@ -1,4 +1,4 @@
-import { instantiate, Prefab, Node, tween, Tween, Vec3 } from "cc";
+import { instantiate, Prefab, Node, Tween, Vec3 } from "cc";
 
 export class BlocksPool {
     private static pool : Node[] = [];
