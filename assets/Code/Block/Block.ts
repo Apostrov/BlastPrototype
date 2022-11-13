@@ -1,6 +1,4 @@
 import { _decorator, Component, Node, Enum, Input, Vec2, Vec3, tween, Tween } from 'cc';
-import { Field } from '../Field/Field';
-import { BlocksPool } from './BlocksPool';
 import { IBlock } from './IBlock';
 const { ccclass, property } = _decorator;
 
@@ -89,7 +87,7 @@ export class Block extends Component implements IBlock {
         tween(this.node)
             .to(this.destroyAnimTime, { scale: new Vec3(0, 0, 0) }, {
                 onComplete(target: Node) {
-                    BlocksPool.destroyBlock(target);
+                    target.destroy();
                 },
             })
             .start();
