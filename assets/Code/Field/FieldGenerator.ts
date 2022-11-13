@@ -10,7 +10,7 @@ export class FieldGenerator extends Component {
     @property({ type: UITransform })
     public uiTransform: UITransform | null = null;
 
-    public fillEmptyBlocks(field: IBlock[][], blockPrefab: Prefab, fieldComponent: Field) {
+    public fillEmptyBlocks(field: IBlock[][], blockPrefab: Prefab, onBlockPress: (block: IBlock) => void) {
         let cellWidth: number = this.uiTransform.width / field.length;
         for (let i = 0; i < field.length; i++) {
             let cellHeight: number = this.uiTransform.height / field[i].length;
@@ -23,7 +23,8 @@ export class FieldGenerator extends Component {
                 block.parent = this.node;
 
                 let blockComponent: Block = block.getComponent(Block);
-                blockComponent.init(new Vec2(i, j), fieldComponent, new Vec3(i * cellWidth, (field[i].length + j) * cellHeight, 0));
+                blockComponent.init(new Vec2(i, j), new Vec3(i * cellWidth, (field[i].length + j) * cellHeight, 0));
+                blockComponent.onBlockPress(onBlockPress)
                 blockComponent.chooseRandomColor();
                 blockComponent.updatePosition(new Vec3(i * cellWidth, j * cellHeight, 0));
                 field[i][j] = blockComponent;
@@ -50,7 +51,7 @@ export class FieldGenerator extends Component {
 
                     field[i][j] = rearrange;
                     field[i][newJ] = null;
-                    rearrange.updateIndex(new Vec2(i, j));
+                    rearrange.setIndex(new Vec2(i, j));
                     rearrange.updatePosition(new Vec3(i * cellWidth, j * cellHeight, 0));
                     break;
                 }

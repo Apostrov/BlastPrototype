@@ -8,7 +8,8 @@ export enum BlockColor {
     BLUE = 0,
     GREEN,
     PINK,
-    YELLOW
+    YELLOW,
+    SUPERBLOCK
 };
 
 @ccclass('BlockVisual')
@@ -19,10 +20,11 @@ export class BlockVisual {
     Visual: Node | null = null;
 }
 
-export const randomEnumValue = (enumeration) => {
-    const values = Object.keys(enumeration);
+export const randomBlockColor = () => {
+    const values = Object.keys(BlockColor);
+    values.length -= 1; // remove SUPERBLOCk
     const enumKey = values[Math.floor(Math.random() * values.length)];
-    return enumeration[enumKey];
+    return BlockColor[enumKey];
 }
 
 @ccclass('Block')
@@ -36,25 +38,19 @@ export class Block extends Component implements IBlock {
 
     private index: Vec2 = new Vec2(0, 0);
     private color: BlockColor = BlockColor.BLUE;
-    private fieldComponent: Field | null = null;
     private currentTween: Tween<Node> | null = null;
 
-    public init(index: Vec2, fieldComponent: Field, spawnPos: Vec3) {
+    public init(index: Vec2, spawnPos: Vec3) {
         this.index = index;
-        this.fieldComponent = fieldComponent;
         this.node.position = spawnPos;
     }
 
-    public onLoad() {
-        this.node.on(Input.EventType.TOUCH_START, this.onBlockPress, this);
-    }
-
-    private onBlockPress() {
-        this.fieldComponent?.blockPressed(this);
+    public onBlockPress(callback: (block: IBlock) => void) {
+        this.node.on(Input.EventType.TOUCH_START, () => callback(this), this);
     }
 
     public chooseRandomColor() {
-        this.chooseColor(randomEnumValue(BlockColor));
+        this.chooseColor(randomBlockColor());
     }
 
     private chooseColor(color: BlockColor) {
@@ -72,8 +68,12 @@ export class Block extends Component implements IBlock {
         return this.color;
     }
 
-    public updateIndex(index: Vec2) {
+    public setIndex(index: Vec2) {
         this.index = index;
+    }
+
+    public setColor(color: BlockColor) {
+        this.chooseColor(color);
     }
 
     public updatePosition(pos: Vec3) {

@@ -46,5 +46,29 @@ export class FieldBlastSolver {
         }
         return false;
     }
+
+    public static rowAndColumnBlastSolve(startBlock: IBlock, field: IBlock[][]): IBlock[] {
+        let toBlast: IBlock[] = [];
+        let dfsStack: Vec2[] = [startBlock.getIndex()];
+        let move = 1;
+        while (dfsStack.length > 0) {
+            let index: Vec2 = dfsStack.pop();
+
+            if (index.x < 0 || index.y < 0 ||
+                index.x >= field.length || index.y >= field[index.x].length) {
+                continue;
+            }
+            
+            let startIndex = startBlock.getIndex();
+            toBlast.push(field[index.x][index.y]);
+            dfsStack.push(new Vec2(startIndex.x + move, startIndex.y));
+            dfsStack.push(new Vec2(startIndex.x, startIndex.y + move));
+            dfsStack.push(new Vec2(startIndex.x - move, startIndex.y));
+            dfsStack.push(new Vec2(startIndex.x, startIndex.y - move));
+            move++;
+        }
+
+        return toBlast;
+    }
 }
 

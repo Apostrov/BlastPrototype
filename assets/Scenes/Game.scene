@@ -92,6 +92,7 @@
     "__prefab": null,
     "minBlastGroup": 2,
     "maxFieldRefresh": 3,
+    "blastSizeForSuperBlock": 6,
     "gridSize": {
       "__type__": "cc.Vec2",
       "x": 9,
@@ -99,13 +100,13 @@
     },
     "rangeNumberOfMoves": {
       "__type__": "cc.Vec2",
-      "x": 5,
-      "y": 15
+      "x": 10,
+      "y": 25
     },
     "rangeNumberOfPoints": {
       "__type__": "cc.Vec2",
-      "x": 20,
-      "y": 50
+      "x": 100,
+      "y": 200
     },
     "field": null,
     "uiStateManager": {

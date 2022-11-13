@@ -1,4 +1,5 @@
 import { _decorator, Component, Prefab, Vec2 } from 'cc';
+import { BlockColor } from '../Block/Block';
 import { IBlock } from '../Block/IBlock';
 import { GameConfig } from '../Game';
 import { UIStateManager } from '../UI/UIStateManager';
@@ -39,22 +40,45 @@ export class Field extends Component {
             .map(() =>
                 new Array(this.config.gridSize.y).fill(null)
             );
-        this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this);
+        this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this.blockPressed.bind(this));
         this.tryRefreshField();
     }
 
-    public blockPressed(block: IBlock) {
+    private blockPressed(block: IBlock) {
+        if (block.getColor() == BlockColor.SUPERBLOCK) {
+            this.superBlockPressed(block);
+            return;
+        }
+
+        this.normalBlockPressed(block);
+    }
+
+    private normalBlockPressed(block: IBlock) {
         let toDestroy: IBlock[] = FieldBlastSolver.dfsBlastSolve(block, this.field);
         if (toDestroy.length < this.config.minBlastGroup) {
             this.blastCantDestroy(toDestroy);
             this.movesCounter.updateMovesNumber();
             return;
         }
-        
+
+        if(toDestroy.length >= this.config.blastSizeForSuperBlock) {
+            toDestroy = toDestroy.filter(item => item != block);
+            block.setColor(BlockColor.SUPERBLOCK);
+        }
+
+        this.destroyBlast(toDestroy);
+    }
+
+    private superBlockPressed(superBlock: IBlock) {
+        let toDestroy: IBlock[] = FieldBlastSolver.rowAndColumnBlastSolve(superBlock, this.field);
+        this.destroyBlast(toDestroy);
+    }
+
+    private destroyBlast(toDestroy: IBlock[]) {
         this.destroyBlocks(toDestroy);
         this.movesCounter.updateMovesNumber();
         this.fieldGenerator.rearrangeField(this.field);
-        this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this);
+        this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this.blockPressed.bind(this));
         this.tryRefreshField();
     }
 
@@ -77,7 +101,7 @@ export class Field extends Component {
         }
 
         this.clearField();
-        this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this);
+        this.fieldGenerator.fillEmptyBlocks(this.field, this.block, this.blockPressed.bind(this));
         this.refreshCount++;
 
         this.tryRefreshField();
@@ -90,7 +114,7 @@ export class Field extends Component {
         });
     }
 
-    private blastCantDestroy( toDestroy: IBlock[]) {
+    private blastCantDestroy(toDestroy: IBlock[]) {
         toDestroy.forEach((block) => block.cantDestroyBlock());
     }
 }
